@@ -16,8 +16,14 @@ Options:
 - `stackbitPullApiUrl`: Stackbit pull URL, takes following form: https://api.stackbit.com/pull/<stackbitProjectId>
 - `stackbitApiKey`: Stackbit API key, can be acquired in project's API Keys section in https://app.stackbit.com/dashboard. Can be also specified via STACKBIT_API_KEY environment variable.
 
-Example:
+## Examples
 
+Using `npx`:
+```
+npx @stackbit/stackbit-pull --stackbit-pull-api-url=https://api.stackbit.com/pull/<stackbitProjectId> --stackbit-api-key=...
+```
+
+Using `STACKBIT_API_KEY`:
 ```
 export STACKBIT_API_KEY=...
 ./stackbit-pull.js --stackbit-pull-api-url=https://api.stackbit.com/pull/<stackbitProjectId>

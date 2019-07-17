@@ -66,7 +66,7 @@ const req = https.request(options, (res) => {
         }
 
         for (let i = 0; i < response.length; i++) {
-            const fullPath = path.join(__dirname, response[i].filePath);
+            const fullPath = path.join(process.cwd(), response[i].filePath);
             fse.ensureDirSync(path.dirname(fullPath));
             if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))){
                 response[i].data = mergeFile(fullPath, response[i].data);

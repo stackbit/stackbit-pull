@@ -9,81 +9,57 @@ const yaml = require('js-yaml');
 const toml = require('@iarna/toml');
 const commander = require('commander');
 
-// const argv = minimist(process.argv.slice(2));
-commander
-    .option('--stackbit-pull-api-url <stackbitPullApiUrl>', '[required] stackbit pull API URL')
-    .option('--stackbit-api-key <stackbitApiKey>', '[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable')
-    .parse(process.argv);
+function pull(stackbitPullApiUrl, apiKey) {
+    return new Promise((resolve, reject) => {
+        const urlObject = url.parse(stackbitPullApiUrl);
+        const body = JSON.stringify({apiKey: apiKey});
 
-const stackbitPullApiUrl = commander['stackbitPullApiUrl'];
-const apiKey = process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
-
-if (!stackbitPullApiUrl) {
-    commander.help(helpText => helpText + `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`);
-}
-
-if (!apiKey) {
-    commander.help(helpText => helpText + `\nError: either '--stackbit-api-key' argument or 'STACKBIT_API_KEY' must be specified\n\n`);
-}
-
-const urlObject = url.parse(stackbitPullApiUrl);
-const data = JSON.stringify({apiKey: apiKey});
-
-console.log(`fetching data for project from ${urlObject.href}`);
-
-const options = {
-    host: urlObject.host,
-    path: urlObject.path,
-    protocol: urlObject.protocol,
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'Content-Length': data.length
-    }
-};
-
-const req = https.request(options, (res) => {
-    let data = '';
-    res.on('data', chunk => {
-        data += chunk;
-    });
-
-    res.on('end', () => {
-        if (res.statusCode === 404) {
-            throw new Error('Project not found');
-        }
-
-        let response;
-
-        try {
-            response = JSON.parse(data);
-        } catch (err) {
-            throw new Error(`Failed to serialize response json`);
-        }
-
-        if (res.statusCode >= 400) {
-            throw new Error(`Failed to build project, statusCode: ${res.statusCode}, response: ${JSON.stringify(response)}`);
-        }
-
-        for (let i = 0; i < response.length; i++) {
-            const fullPath = path.join(process.cwd(), response[i].filePath);
-            fse.ensureDirSync(path.dirname(fullPath));
-            if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))){
-                response[i].data = mergeFile(fullPath, response[i].data);
+        const options = {
+            host: urlObject.host,
+            path: urlObject.path,
+            protocol: urlObject.protocol,
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Content-Length': body.length
             }
-            console.log('creating file', fullPath);
-            fs.writeFileSync(fullPath, response[i].data);
-        }
+        };
+
+        const req = https.request(options, (res) => {
+            let data = '';
+            res.on('data', chunk => {
+                data += chunk;
+            });
+
+            res.on('end', () => {
+                if (res.statusCode === 404) {
+                    return reject(new Error('Project not found'));
+                }
+
+                let response;
+
+                try {
+                    response = JSON.parse(data);
+                } catch (err) {
+                    return reject(new Error(`Failed to serialize response json`));
+                }
+
+                if (res.statusCode >= 400) {
+                    return reject(new Error(`Failed to build project, statusCode: ${res.statusCode}, response: ${JSON.stringify(response)}`));
+                }
+
+                resolve(response);
+            });
+        });
+
+        req.on('error', (e) => {
+            reject(new Error(`Error fetching project build: ${e.message}`));
+        });
+
+        req.write(body);
+        req.end();
     });
-});
-
-req.on('error', (e) => {
-    throw new Error(`Error fetching project build: ${e.message}`);
-});
-
-req.write(data);
-req.end();
-
+}
 
 function mergeFile(fullPath, remoteData) {
     let localObj;
@@ -150,4 +126,43 @@ function stringifyDataByFilePath(data, filePath) {
             throw new Error(`could not serialize '${filePath}', extension '${extension}' is not supported`);
     }
     return result;
+}
+
+if (require.main === module) {
+    commander
+        .option('--stackbit-pull-api-url <stackbitPullApiUrl>', '[required] stackbit pull API URL')
+        .option('--stackbit-api-key <stackbitApiKey>', '[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable')
+        .parse(process.argv);
+
+    const stackbitPullApiUrl = commander['stackbitPullApiUrl'];
+    const apiKey = process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
+
+    if (!stackbitPullApiUrl) {
+        commander.help(helpText => helpText + `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`);
+    }
+
+    if (!apiKey) {
+        commander.help(helpText => helpText + `\nError: either '--stackbit-api-key' argument or 'STACKBIT_API_KEY' must be specified\n\n`);
+    }
+
+    console.log(`fetching data for project from ${stackbitPullApiUrl}`);
+
+    return pull(stackbitPullApiUrl, apiKey).then(response => {
+        for (let i = 0; i < response.length; i++) {
+            const fullPath = path.join(process.cwd(), response[i].filePath);
+            fse.ensureDirSync(path.dirname(fullPath));
+            if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))){
+                response[i].data = mergeFile(fullPath, response[i].data);
+            }
+            console.log('creating file', fullPath);
+            fs.writeFileSync(fullPath, response[i].data);
+        }
+    }).catch(err => {
+        console.error(err);
+        process.exit(1);
+    });
+}
+
+module.exports = {
+    pull
 }

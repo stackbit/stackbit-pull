@@ -15,9 +15,10 @@ function pull(stackbitPullApiUrl, apiKey) {
         const body = JSON.stringify({apiKey: apiKey});
 
         const options = {
-            host: urlObject.host,
+            hostname: urlObject.hostname,
             path: urlObject.path,
             protocol: urlObject.protocol,
+            port: urlObject.port || 443,
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

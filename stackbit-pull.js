@@ -9,12 +9,13 @@ const yaml = require('js-yaml');
 const toml = require('@iarna/toml');
 const commander = require('commander');
 
-function pull(stackbitPullApiUrl, apiKey) {
+function pull(options) {
     return new Promise((resolve, reject) => {
+        const { stackbitPullApiUrl, ...bodyOptions } = options;
         const urlObject = url.parse(stackbitPullApiUrl);
-        const body = JSON.stringify({apiKey: apiKey});
+        const body = JSON.stringify(bodyOptions);
 
-        const options = {
+        const requestOptions = {
             hostname: urlObject.hostname,
             path: urlObject.path,
             protocol: urlObject.protocol,
@@ -26,7 +27,7 @@ function pull(stackbitPullApiUrl, apiKey) {
             }
         };
 
-        const req = https.request(options, (res) => {
+        const req = https.request(requestOptions, (res) => {
             let data = '';
             res.on('data', chunk => {
                 data += chunk;
@@ -148,7 +149,7 @@ if (require.main === module) {
 
     console.log(`fetching data for project from ${stackbitPullApiUrl}`);
 
-    return pull(stackbitPullApiUrl, apiKey).then(response => {
+    return pull({stackbitPullApiUrl, apiKey}).then(response => {
         for (let i = 0; i < response.length; i++) {
             const fullPath = path.join(process.cwd(), response[i].filePath);
             fse.ensureDirSync(path.dirname(fullPath));
@@ -166,4 +167,4 @@ if (require.main === module) {
 
 module.exports = {
     pull
-}
+};

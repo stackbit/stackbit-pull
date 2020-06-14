@@ -134,10 +134,14 @@ if (require.main === module) {
     commander
         .option('--stackbit-pull-api-url <stackbitPullApiUrl>', '[required] stackbit pull API URL')
         .option('--stackbit-api-key <stackbitApiKey>', '[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable')
+        .option('--environment <environment>', '[optional] environment to pull data for')
         .parse(process.argv);
 
     const stackbitPullApiUrl = commander['stackbitPullApiUrl'];
     const apiKey = process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
+
+    // Environment to pull data for, defaults to Netlify's BRANCH 
+    const environment = commander['environment'] || process.env['BRANCH'];
 
     if (!stackbitPullApiUrl) {
         commander.help(helpText => helpText + `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`);
@@ -149,7 +153,7 @@ if (require.main === module) {
 
     console.log(`fetching data for project from ${stackbitPullApiUrl}`);
 
-    return pull({stackbitPullApiUrl, apiKey}).then(response => {
+    return pull({stackbitPullApiUrl, apiKey, environment}).then(response => {
         for (let i = 0; i < response.length; i++) {
             const fullPath = path.join(process.cwd(), response[i].filePath);
             fse.ensureDirSync(path.dirname(fullPath));

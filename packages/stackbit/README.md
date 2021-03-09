@@ -1,6 +1,6 @@
 # stackbit-pull
 
-Stackbit pull, is a build tool that fetches data from CMS and prepares it for
+Stackbit pull, is a build tool that fetches data from CMS using Stackbit's API and prepares it for
 SSG build. 
 
 Usage:

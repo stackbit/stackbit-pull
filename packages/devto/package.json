@@ -1,0 +1,29 @@
+{
+  "name": "@stackbit/devto-pull",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "davbree <david@stackbit.com>",
+  "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
+  "license": "ISC",
+  "main": "lib/devto.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackbithq/stackbit-pull.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "bugs": {
+    "url": "https://github.com/stackbithq/stackbit-pull/issues"
+  },
+  "dependencies": {
+    "@stackbit/stackbit-pull-core": "^1.0.0"
+  }
+}

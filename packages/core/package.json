@@ -1,0 +1,37 @@
+{
+  "private": true,
+  "name": "@stackbit/stackbit-pull-core",
+  "version": "1.0.0",
+  "description": "Core logic for pull mechanisms",
+  "author": "Stackbit Inc.",
+  "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
+  "license": "MIT",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackbithq/stackbit-pull.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stackbithq/stackbit-pull/issues"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.3",
+    "fs-extra": "^8.1.0",
+    "js-yaml": "^3.13.1"
+  },
+  "devDependencies": {
+    "@stackbit/eslint-config": "^1.2.1",
+    "@stackbit/prettier-config": "^1.0.0",
+    "eslint": "^7.12.1",
+    "prettier": "^2.1.2"
+  },
+  "scripts": {
+    "lint": "eslint --fix --ext .js ."
+  },
+  "prettier": "@stackbit/prettier-config",
+  "eslintConfig": {
+    "extends": [
+      "@stackbit"
+    ]
+  }
+}

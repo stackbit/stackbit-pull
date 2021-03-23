@@ -13,9 +13,9 @@ if (require.main === module) {
   if (!jsonFile) {
     commander.help(helpText => `${helpText}
 Error: '--json-file' argument must be specified\n\n`)
-
-    console.log(`creating files from json file ${jsonFile}`)
-
-    return createFromJsonFile(jsonFile)
   }
+  
+  console.log(`creating files from json file ${jsonFile}`)
+
+  return createFromJsonFile(jsonFile)
 }

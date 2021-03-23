@@ -1,6 +1,10 @@
 {
-  "name": "@stackbit/stackbit-pull",
-  "version": "0.4.0",
+  "name": "@jeff-tian/stackbit-pull",
+  "version": "0.4.1",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "description": "stackbit-pull build tool",
   "main": "stackbit-pull.js",
   "engines": {
@@ -12,7 +16,8 @@
     "version-patch": "npm version patch -m \"bumped version to v%s\""
   },
   "bin": {
-    "stackbit-pull": "./stackbit-pull.js"
+    "stackbit-pull": "./stackbit-pull.js",
+    "stackbit-pull-json": "./stackbit-pull-json.js"
   },
   "repository": {
     "type": "git",

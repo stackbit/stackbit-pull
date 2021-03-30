@@ -29,7 +29,7 @@ function pull(options) {
 
         const req = https.request(requestOptions, (res) => {
             let data = '';
-            res.on('data', chunk => {
+            res.on('data', (chunk) => {
                 data += chunk;
             });
 
@@ -96,7 +96,7 @@ function parseDataByFilePath(data, filePath) {
     switch (extension) {
         case 'yml':
         case 'yaml':
-            result = yaml.safeLoad(data, {schema: yaml.JSON_SCHEMA});
+            result = yaml.safeLoad(data, { schema: yaml.JSON_SCHEMA });
             break;
         case 'json':
             result = JSON.parse(data);
@@ -116,7 +116,7 @@ function stringifyDataByFilePath(data, filePath) {
     switch (extension) {
         case 'yml':
         case 'yaml':
-            result = yaml.safeDump(data, {noRefs: true});
+            result = yaml.safeDump(data, { noRefs: true });
             break;
         case 'json':
             result = JSON.stringify(data, null, 4);
@@ -140,33 +140,35 @@ if (require.main === module) {
     const stackbitPullApiUrl = commander['stackbitPullApiUrl'];
     const apiKey = process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
 
-    // Environment to pull data for, defaults to Netlify's BRANCH 
+    // Environment to pull data for, defaults to Netlify's BRANCH
     const environment = commander['environment'] || process.env['BRANCH'];
 
     if (!stackbitPullApiUrl) {
-        commander.help(helpText => helpText + `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`);
+        commander.help((helpText) => helpText + `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`);
     }
 
     if (!apiKey) {
-        commander.help(helpText => helpText + `\nError: either '--stackbit-api-key' argument or 'STACKBIT_API_KEY' must be specified\n\n`);
+        commander.help((helpText) => helpText + `\nError: either '--stackbit-api-key' argument or 'STACKBIT_API_KEY' must be specified\n\n`);
     }
 
     console.log(`fetching data for project from ${stackbitPullApiUrl}`);
 
-    return pull({stackbitPullApiUrl, apiKey, environment}).then(response => {
-        for (let i = 0; i < response.length; i++) {
-            const fullPath = path.join(process.cwd(), response[i].filePath);
-            fse.ensureDirSync(path.dirname(fullPath));
-            if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))){
-                response[i].data = mergeFile(fullPath, response[i].data);
+    return pull({ stackbitPullApiUrl, apiKey, environment })
+        .then((response) => {
+            for (let i = 0; i < response.length; i++) {
+                const fullPath = path.join(process.cwd(), response[i].filePath);
+                fse.ensureDirSync(path.dirname(fullPath));
+                if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))) {
+                    response[i].data = mergeFile(fullPath, response[i].data);
+                }
+                console.log('creating file', fullPath);
+                fs.writeFileSync(fullPath, response[i].data);
             }
-            console.log('creating file', fullPath);
-            fs.writeFileSync(fullPath, response[i].data);
-        }
-    }).catch(err => {
-        console.error(err);
-        process.exit(1);
-    });
+        })
+        .catch((err) => {
+            console.error(err);
+            process.exit(1);
+        });
 }
 
 module.exports = {

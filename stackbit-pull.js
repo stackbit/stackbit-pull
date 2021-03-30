@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 
-const fse = require("fs-extra");
-const fs = require("fs");
-const path = require("path");
-const https = require("https");
-const url = require("url");
-const yaml = require("js-yaml");
-const toml = require("@iarna/toml");
-const commander = require("commander");
+const fse = require('fs-extra');
+const fs = require('fs');
+const path = require('path');
+const https = require('https');
+const url = require('url');
+const yaml = require('js-yaml');
+const toml = require('@iarna/toml');
+const commander = require('commander');
 
 const writeFiles = (response) => {
     for (let i = 0; i < response.length; i++) {
@@ -15,13 +15,13 @@ const writeFiles = (response) => {
         fse.ensureDirSync(path.dirname(fullPath));
         if (
             fs.existsSync(fullPath) &&
-            ["yml", "yaml", "toml", "json"].includes(
+            ['yml', 'yaml', 'toml', 'json'].includes(
                 path.extname(fullPath).substring(1)
             )
         ) {
             response[i].data = mergeFile(fullPath, response[i].data);
         }
-        console.log("creating file", fullPath);
+        console.log('creating file', fullPath);
         fs.writeFileSync(fullPath, response[i].data);
     }
 };
@@ -39,22 +39,22 @@ function pull(options) {
             path: urlObject.path,
             protocol: urlObject.protocol,
             port: urlObject.port || 443,
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json",
-                "Content-Length": body.length,
+                'Content-Type': 'application/json',
+                'Content-Length': body.length,
             },
         };
 
         const req = https.request(requestOptions, (res) => {
-            let data = "";
-            res.on("data", (chunk) => {
+            let data = '';
+            res.on('data', (chunk) => {
                 data += chunk;
             });
 
-            res.on("end", () => {
+            res.on('end', () => {
                 if (res.statusCode === 404) {
-                    return reject(new Error("Project not found"));
+                    return reject(new Error('Project not found'));
                 }
 
                 let response;
@@ -81,7 +81,7 @@ function pull(options) {
             });
         });
 
-        req.on("error", (e) => {
+        req.on('error', (e) => {
             reject(new Error(`Error fetching project build: ${e.message}`));
         });
 
@@ -115,7 +115,7 @@ function mergeFile(fullPath, remoteData) {
 }
 
 function parseFileSync(filePath) {
-    let data = fs.readFileSync(filePath, "utf8");
+    let data = fs.readFileSync(filePath, 'utf8');
     return parseDataByFilePath(data, filePath);
 }
 
@@ -123,14 +123,14 @@ function parseDataByFilePath(data, filePath) {
     const extension = path.extname(filePath).substring(1);
     let result;
     switch (extension) {
-        case "yml":
-        case "yaml":
+        case 'yml':
+        case 'yaml':
             result = yaml.safeLoad(data, { schema: yaml.JSON_SCHEMA });
             break;
-        case "json":
+        case 'json':
             result = JSON.parse(data);
             break;
-        case "toml":
+        case 'toml':
             result = toml.parse(data);
             break;
         default:
@@ -145,14 +145,14 @@ function stringifyDataByFilePath(data, filePath) {
     const extension = path.extname(filePath).substring(1);
     let result;
     switch (extension) {
-        case "yml":
-        case "yaml":
+        case 'yml':
+        case 'yaml':
             result = yaml.safeDump(data, { noRefs: true });
             break;
-        case "json":
+        case 'json':
             result = JSON.stringify(data, null, 4);
             break;
-        case "toml":
+        case 'toml':
             result = toml.stringify(data);
             break;
         default:
@@ -166,25 +166,25 @@ function stringifyDataByFilePath(data, filePath) {
 if (require.main === module) {
     commander
         .option(
-            "--stackbit-pull-api-url <stackbitPullApiUrl>",
-            "[required] stackbit pull API URL"
+            '--stackbit-pull-api-url <stackbitPullApiUrl>',
+            '[required] stackbit pull API URL'
         )
         .option(
-            "--stackbit-api-key <stackbitApiKey>",
-            "[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable"
+            '--stackbit-api-key <stackbitApiKey>',
+            '[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable'
         )
         .option(
-            "--environment <environment>",
-            "[optional] environment to pull data for"
+            '--environment <environment>',
+            '[optional] environment to pull data for'
         )
         .parse(process.argv);
 
-    const stackbitPullApiUrl = commander["stackbitPullApiUrl"];
+    const stackbitPullApiUrl = commander['stackbitPullApiUrl'];
     const apiKey =
-        process.env["STACKBIT_API_KEY"] || commander["stackbitApiKey"];
+        process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
 
     // Environment to pull data for, defaults to Netlify's BRANCH
-    const environment = commander["environment"] || process.env["BRANCH"];
+    const environment = commander['environment'] || process.env['BRANCH'];
 
     if (!stackbitPullApiUrl) {
         commander.help(

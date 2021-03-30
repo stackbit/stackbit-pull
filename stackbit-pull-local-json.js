@@ -4,9 +4,7 @@ const commander = require('commander');
 const { createFromLocalJsonFile } = require('./stackbit-pull');
 
 if (require.main === module) {
-    commander
-        .option('--json-file <json-file>', '[required] local json file')
-        .parse(process.argv);
+    commander.option('--json-file <json-file>', '[required] local json file').parse(process.argv);
 
     const jsonFile = commander['jsonFile'];
 

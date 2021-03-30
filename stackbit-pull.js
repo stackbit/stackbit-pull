@@ -13,12 +13,7 @@ const writeFiles = (response) => {
     for (let i = 0; i < response.length; i++) {
         const fullPath = path.join(process.cwd(), response[i].filePath);
         fse.ensureDirSync(path.dirname(fullPath));
-        if (
-            fs.existsSync(fullPath) &&
-            ['yml', 'yaml', 'toml', 'json'].includes(
-                path.extname(fullPath).substring(1)
-            )
-        ) {
+        if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))) {
             response[i].data = mergeFile(fullPath, response[i].data);
         }
         console.log('creating file', fullPath);
@@ -42,8 +37,8 @@ function pull(options) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Content-Length': body.length,
-            },
+                'Content-Length': body.length
+            }
         };
 
         const req = https.request(requestOptions, (res) => {
@@ -62,19 +57,11 @@ function pull(options) {
                 try {
                     response = JSON.parse(data);
                 } catch (err) {
-                    return reject(
-                        new Error(`Failed to serialize response json`)
-                    );
+                    return reject(new Error(`Failed to serialize response json`));
                 }
 
                 if (res.statusCode >= 400) {
-                    return reject(
-                        new Error(
-                            `Failed to build project, statusCode: ${
-                                res.statusCode
-                            }, response: ${JSON.stringify(response)}`
-                        )
-                    );
+                    return reject(new Error(`Failed to build project, statusCode: ${res.statusCode}, response: ${JSON.stringify(response)}`));
                 }
 
                 resolve(response);
@@ -105,9 +92,7 @@ function mergeFile(fullPath, remoteData) {
             const mergedData = Object.assign(localObj, remoteObj);
             return stringifyDataByFilePath(mergedData, fullPath);
         } catch (err) {
-            throw new Error(
-                `Could not merge remote data with local file at ${fullPath}\n${err}`
-            );
+            throw new Error(`Could not merge remote data with local file at ${fullPath}\n${err}`);
         }
     }
 
@@ -134,9 +119,7 @@ function parseDataByFilePath(data, filePath) {
             result = toml.parse(data);
             break;
         default:
-            throw new Error(
-                `could not parse '${filePath}', extension '${extension}' is not supported`
-            );
+            throw new Error(`could not parse '${filePath}', extension '${extension}' is not supported`);
     }
     return result;
 }
@@ -156,32 +139,20 @@ function stringifyDataByFilePath(data, filePath) {
             result = toml.stringify(data);
             break;
         default:
-            throw new Error(
-                `could not serialize '${filePath}', extension '${extension}' is not supported`
-            );
+            throw new Error(`could not serialize '${filePath}', extension '${extension}' is not supported`);
     }
     return result;
 }
 
 if (require.main === module) {
     commander
-        .option(
-            '--stackbit-pull-api-url <stackbitPullApiUrl>',
-            '[required] stackbit pull API URL'
-        )
-        .option(
-            '--stackbit-api-key <stackbitApiKey>',
-            '[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable'
-        )
-        .option(
-            '--environment <environment>',
-            '[optional] environment to pull data for'
-        )
+        .option('--stackbit-pull-api-url <stackbitPullApiUrl>', '[required] stackbit pull API URL')
+        .option('--stackbit-api-key <stackbitApiKey>', '[required] stackbit API key, can be also specified through STACKBIT_API_KEY environment variable')
+        .option('--environment <environment>', '[optional] environment to pull data for')
         .parse(process.argv);
 
     const stackbitPullApiUrl = commander['stackbitPullApiUrl'];
-    const apiKey =
-        process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
+    const apiKey = process.env['STACKBIT_API_KEY'] || commander['stackbitApiKey'];
 
     // Environment to pull data for, defaults to Netlify's BRANCH
     const environment = commander['environment'] || process.env['BRANCH'];
@@ -206,5 +177,5 @@ if (require.main === module) {
 
 module.exports = {
     pull,
-    createFromLocalJsonFile,
+    createFromLocalJsonFile
 };

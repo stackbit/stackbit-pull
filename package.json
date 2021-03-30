@@ -1,38 +1,42 @@
 {
-  "name": "@stackbit/stackbit-pull",
-  "version": "0.4.1",
-  "description": "stackbit-pull build tool",
-  "main": "stackbit-pull.js",
-  "engines": {
-    "node": ">=10.15.1",
-    "npm": ">=6.9.0"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "version-patch": "npm version patch -m \"bumped version to v%s\""
-  },
-  "bin": {
-    "stackbit-pull": "./stackbit-pull.js",
-    "stackbit-pull-json": "./stackbit-pull-json.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/stackbithq/stackbit-pull.git"
-  },
-  "bugs": {
-    "url": "https://github.com/stackbithq/stackbit-pull/issues"
-  },
-  "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
-  "keywords": [
-    "stackbit",
-    "jamstack"
-  ],
-  "author": "Stackbit Inc.",
-  "license": "MIT",
-  "dependencies": {
-    "@iarna/toml": "^2.2.3",
-    "commander": "^2.20.0",
-    "fs-extra": "^8.1.0",
-    "js-yaml": "^3.13.1"
-  }
+    "name": "@stackbit/stackbit-pull",
+    "version": "0.4.1",
+    "description": "stackbit-pull build tool",
+    "main": "stackbit-pull.js",
+    "engines": {
+        "node": ">=10.15.1",
+        "npm": ">=6.9.0"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "version-patch": "npm version patch -m \"bumped version to v%s\"",
+        "format": "npx prettier --write ."
+    },
+    "bin": {
+        "stackbit-pull": "./stackbit-pull.js",
+        "stackbit-pull-local-json": "./stackbit-pull-local-json.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stackbithq/stackbit-pull.git"
+    },
+    "bugs": {
+        "url": "https://github.com/stackbithq/stackbit-pull/issues"
+    },
+    "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
+    "keywords": [
+        "stackbit",
+        "jamstack"
+    ],
+    "author": "Stackbit Inc.",
+    "license": "MIT",
+    "dependencies": {
+        "@iarna/toml": "^2.2.3",
+        "commander": "^2.20.0",
+        "fs-extra": "^8.1.0",
+        "js-yaml": "^3.13.1"
+    },
+    "devDependencies": {
+        "prettier": "2.2.1"
+    }
 }

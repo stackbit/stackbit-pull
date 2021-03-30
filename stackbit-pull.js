@@ -187,19 +187,11 @@ if (require.main === module) {
     const environment = commander['environment'] || process.env['BRANCH'];
 
     if (!stackbitPullApiUrl) {
-        commander.help(
-            (helpText) =>
-                helpText +
-                `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`
-        );
+        commander.help((helpText) => helpText + `\nError: '--stackbit-pull-api-url' argument must be specified\n\n`);
     }
 
     if (!apiKey) {
-        commander.help(
-            (helpText) =>
-                helpText +
-                `\nError: either '--stackbit-api-key' argument or 'STACKBIT_API_KEY' must be specified\n\n`
-        );
+        commander.help((helpText) => helpText + `\nError: either '--stackbit-api-key' argument or 'STACKBIT_API_KEY' must be specified\n\n`);
     }
 
     console.log(`fetching data for project from ${stackbitPullApiUrl}`);

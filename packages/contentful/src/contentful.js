@@ -4,6 +4,14 @@ const _ = require('lodash');
 const { utils } = require('@stackbit/stackbit-pull-core');
 const PAGE_SIZE = 100;
 
+/**
+ *
+ * @param spaceId {string}
+ * @param ssgType {string}
+ * @param accessToken {string}
+ * @param options {{environment: string, preview: boolean, resolveLinks: boolean, allObjects: boolean, dataFormat: string, metadata: boolean}}
+ * @returns {PromiseLike<{readonly entries?: *, readonly assets?: *}>}
+ */
 function pull(spaceId, ssgType, accessToken, options) {
     console.log(
         `fetching entries from Contentful, spaceId: '${spaceId}', accessToken: '${accessToken.slice(0, 2)}..${accessToken.slice(-2)}'`

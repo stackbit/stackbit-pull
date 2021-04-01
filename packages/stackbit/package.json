@@ -26,6 +26,9 @@
   "scripts": {
     "lint": "eslint --fix --ext .js ."
   },
+  "bin": {
+    "stackbit-pull": "./src/index.js"
+  },
   "prettier": "@stackbit/prettier-config",
   "eslintConfig": {
     "extends": [

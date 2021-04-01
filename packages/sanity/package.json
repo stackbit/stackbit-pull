@@ -1,6 +1,6 @@
 {
   "name": "@stackbit/sanity-pull",
-  "version": "1.0.1-alpha.1",
+  "version": "1.0.1-alpha.2",
   "description": "Tool to fetch content from Sanity and save it as files",
   "author": "Stackbit Inc.",
   "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@sanity/client": "^0.141.6",
-    "@stackbit/stackbit-pull-core": "^1.0.1-alpha.0",
+    "@stackbit/stackbit-pull-core": "^1.0.1-alpha.2",
     "commander": "^2.20.0"
   },
   "devDependencies": {

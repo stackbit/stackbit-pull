@@ -16,7 +16,8 @@
   "dependencies": {
     "@sanity/client": "^0.141.6",
     "@stackbit/stackbit-pull-core": "^1.0.1-alpha.2",
-    "commander": "^2.20.0"
+    "commander": "^2.20.0",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@stackbit/eslint-config": "^1.2.1",

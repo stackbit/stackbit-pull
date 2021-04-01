@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 const https = require('https');
 const url = require('url');
 const commander = require('commander');

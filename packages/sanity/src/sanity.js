@@ -36,7 +36,7 @@ function pull(projectId, ssgType, token, options) {
     return client
         .fetch(`*[${query}]`)
         .then((entries) => {
-            console.log('Serverless: got entries from Sanity');
+            console.log('got entries from Sanity');
             if (preview) {
                 return overlayDrafts(entries);
             } else {
@@ -47,7 +47,7 @@ function pull(projectId, ssgType, token, options) {
             return filterAndTransformProperties(entries, options);
         })
         .then((entries) => {
-            console.log('Serverless: generating response data');
+            console.log('generating response data');
             return utils.cms.createFiles(entries, ssgType, options);
         });
 }

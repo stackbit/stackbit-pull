@@ -12,7 +12,7 @@ if (require.main === module) {
     commander
         .option('--ssg <ssg>', '[required] Which SSG are you using [jekyll, hugo, gatbsby]')
         .option('--sanity-project-id <sanityProjectId>', '[required] Sanity Project ID')
-        .option('--sanity-token <sanityToken>', '[required] Sanity token')
+        .option('--sanity-access-token <sanityAccessToken>', '[required] Sanity access token')
         .option('--sanity-dataset <dataset>', '[optional] Sanity dataset')
         .parse(process.argv);
 
@@ -26,9 +26,9 @@ if (require.main === module) {
         commander.help((helpText) => helpText + `\nError: '--sanity-project-id' argument must be specified\n\n`);
     }
 
-    const sanityToken = process.env['SANITY_TOKEN'] || commander['sanityToken'];
-    if (!sanityToken) {
-        commander.help((helpText) => helpText + `\nError: '--sanity-token' argument must be specified\n\n`);
+    const sanityAccessToken = process.env['SANITY_ACCESS_TOKEN'] || commander['sanityAccessToken'];
+    if (!sanityAccessToken) {
+        commander.help((helpText) => helpText + `\nError: '--sanity-access-token' argument must be specified\n\n`);
     }
 
     let dataset = process.env['SANITY_DATASET'] || commander['dataset'] || 'production';
@@ -40,7 +40,7 @@ if (require.main === module) {
         }
     }
 
-    pull(sanityProjectId, ssgType, sanityToken, { dataset })
+    pull(sanityProjectId, ssgType, sanityAccessToken, { dataset })
         .then((response) => {
             return writeFiles(response);
         })

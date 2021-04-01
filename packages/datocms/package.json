@@ -1,0 +1,36 @@
+{
+  "name": "@stackbit/datocms-pull",
+  "version": "1.0.0",
+  "description": "Tool to fetch content from DatoCMS and save it as files",
+  "author": "Stackbit Inc.",
+  "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
+  "license": "MIT",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackbithq/stackbit-pull.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stackbithq/stackbit-pull/issues"
+  },
+  "dependencies": {
+    "@stackbit/stackbit-pull-core": "^1.0.0",
+    "commander": "^2.20.0",
+    "datocms-client": "^3.0.24"
+  },
+  "devDependencies": {
+    "@stackbit/eslint-config": "^1.2.1",
+    "@stackbit/prettier-config": "^1.0.0",
+    "eslint": "^7.12.1",
+    "prettier": "^2.1.2"
+  },
+  "scripts": {
+    "lint": "eslint --fix --ext .js ."
+  },
+  "prettier": "@stackbit/prettier-config",
+  "eslintConfig": {
+    "extends": [
+      "@stackbit"
+    ]
+  }
+}

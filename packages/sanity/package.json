@@ -1,6 +1,6 @@
 {
   "name": "@stackbit/sanity-pull",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Tool to fetch content from Sanity and save it as files",
   "author": "Stackbit Inc.",
   "homepage": "https://github.com/stackbithq/stackbit-pull#readme",

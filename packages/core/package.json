@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "@stackbit/stackbit-pull-core",
   "version": "1.0.1-alpha.0",
   "description": "Core logic for pull mechanisms",

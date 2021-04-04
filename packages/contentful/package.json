@@ -1,6 +1,6 @@
 {
   "name": "@stackbit/contentful-pull",
-  "version": "1.0.1-alpha.4",
+  "version": "1.0.1-alpha.6",
   "description": "Tool to fetch content from Contentful and save it as files",
   "author": "Stackbit Inc.",
   "homepage": "https://github.com/stackbithq/stackbit-pull#readme",

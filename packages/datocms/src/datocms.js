@@ -16,11 +16,11 @@ function pull(ssgType, readwriteToken, options) {
     const client = new SiteClient(readwriteToken);
     return fetchData(client)
         .then((cmsData) => {
-            console.log('Serverless: got entries from DatoCMS');
+            console.log('got entries from DatoCMS');
             return filterAndTransformProperties(cmsData, options);
         })
         .then((entries) => {
-            console.log('Serverless: generating response data');
+            console.log('generating response data');
             return utils.cms.createFiles(entries, ssgType, options);
         });
 }

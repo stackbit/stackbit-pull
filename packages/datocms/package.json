@@ -28,6 +28,9 @@
   "scripts": {
     "lint": "eslint --fix --ext .js ."
   },
+  "bin": {
+    "datocms-pull": "./src/index.js"
+  },
   "prettier": "@stackbit/prettier-config",
   "eslintConfig": {
     "extends": [

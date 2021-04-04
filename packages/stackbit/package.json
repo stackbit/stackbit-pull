@@ -1,6 +1,6 @@
 {
   "name": "@stackbit/stackbit-pull",
-  "version": "1.0.1-alpha.5",
+  "version": "0.5.0-alpha.0",
   "description": "Tool to fetch content from Stackbit's API",
   "author": "Stackbit Inc.",
   "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
@@ -14,7 +14,7 @@
     "url": "https://github.com/stackbithq/stackbit-pull/issues"
   },
   "dependencies": {
-    "@stackbit/stackbit-pull-core": "^1.0.1-alpha.4",
+    "@stackbit/stackbit-pull-core": "^0.5.0-alpha.0",
     "commander": "^2.20.0"
   },
   "devDependencies": {

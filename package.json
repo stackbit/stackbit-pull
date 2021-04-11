@@ -13,7 +13,7 @@
     "format": "npx prettier --write *.js"
   },
   "bin": {
-    "stackbit-pull": "./stackbit-pull.js",
+    "stackbit-pull": "stackbit-pull.js",
     "stackbit-pull-local-json": "./stackbit-pull-local-json.js"
   },
   "repository": {

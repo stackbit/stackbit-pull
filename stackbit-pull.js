@@ -9,6 +9,20 @@ const yaml = require('js-yaml');
 const toml = require('@iarna/toml');
 const commander = require('commander');
 
+const writeFiles = (response) => {
+    for (let i = 0; i < response.length; i++) {
+        const fullPath = path.join(process.cwd(), response[i].filePath);
+        fse.ensureDirSync(path.dirname(fullPath));
+        if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))) {
+            response[i].data = mergeFile(fullPath, response[i].data);
+        }
+        console.log('creating file', fullPath);
+        fs.writeFileSync(fullPath, response[i].data);
+    }
+};
+
+const createFromLocalJsonFile = (path) => writeFiles(require(path));
+
 function pull(options) {
     return new Promise((resolve, reject) => {
         const { stackbitPullApiUrl, ...bodyOptions } = options;
@@ -154,17 +168,7 @@ if (require.main === module) {
     console.log(`fetching data for project from ${stackbitPullApiUrl}`);
 
     return pull({ stackbitPullApiUrl, apiKey, environment })
-        .then((response) => {
-            for (let i = 0; i < response.length; i++) {
-                const fullPath = path.join(process.cwd(), response[i].filePath);
-                fse.ensureDirSync(path.dirname(fullPath));
-                if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))) {
-                    response[i].data = mergeFile(fullPath, response[i].data);
-                }
-                console.log('creating file', fullPath);
-                fs.writeFileSync(fullPath, response[i].data);
-            }
-        })
+        .then(writeFiles)
         .catch((err) => {
             console.error(err);
             process.exit(1);
@@ -172,5 +176,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-    pull
+    pull,
+    createFromLocalJsonFile
 };

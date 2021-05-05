@@ -28,3 +28,23 @@ Using `STACKBIT_API_KEY`:
 export STACKBIT_API_KEY=...
 ./stackbit-pull.js --stackbit-pull-api-url=https://api.stackbit.com/pull/<stackbitProjectId>
 ```
+
+
+**Using local json file:**
+
+If you have a local json file with the following structure already downloaded,
+```json
+[
+  {
+    "filePath": "src/pages/posts/post-1.md",
+    "urlPath": "posts/post-1",
+    "data": "---\nstackbit_url_path: >-..."
+  },
+  ...
+]
+```
+then you can skip the network step by using the following command
+(no need to provide `STACKBIT_API_KEY` in this scenario):
+```shell
+npx @stackbit/stackbit-pull stackbit-pull-local-json --json-file=/path/to/your/json/file.json
+```

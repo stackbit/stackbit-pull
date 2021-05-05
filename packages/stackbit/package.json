@@ -27,7 +27,8 @@
     "lint": "eslint --fix --ext .js ."
   },
   "bin": {
-    "stackbit-pull": "./src/index.js"
+    "stackbit-pull": "./src/index.js",
+    "stackbit-pull-local-json": "./src/stackbit-pull-local-json.js"
   },
   "prettier": "@stackbit/prettier-config",
   "eslintConfig": {

@@ -41,7 +41,7 @@ if (require.main === module) {
         }
     }
 
-    pull(sanityProjectId, ssgType, sanityAccessToken, { dataset })
+    pull(sanityProjectId, ssgType, sanityAccessToken, { dataset, preview: false, resolveLinks: true, dataFormat: 'file' })
         .then((response) => {
             return writeFiles(response);
         })

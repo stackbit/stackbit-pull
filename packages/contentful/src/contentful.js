@@ -22,7 +22,7 @@ function pull(spaceId, ssgType, accessToken, options) {
         space: spaceId,
         environment: _.get(options, 'environment', 'master'),
         host: isPreview ? 'preview.contentful.com' : 'cdn.contentful.com',
-        resolveLinks: false
+        resolveLinks: _.get(options, 'resolveLinks', true)
     });
     return getAllEntries(client)
         .then((entries) => {

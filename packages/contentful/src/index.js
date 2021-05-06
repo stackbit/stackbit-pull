@@ -41,7 +41,7 @@ if (require.main === module) {
         }
     }
 
-    pull(spaceId, ssgType, accessToken, { environment })
+    pull(spaceId, ssgType, accessToken, { environment, preview: false, resolveLinks: true, dataFormat: 'file' })
         .then((response) => {
             return writeFiles(response);
         })

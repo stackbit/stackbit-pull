@@ -24,7 +24,7 @@ if (require.main === module) {
         commander.help((helpText) => helpText + `\nError: '--datocms-access-token' argument must be specified\n\n`);
     }
 
-    pull(ssgType, accessToken, {})
+    pull(ssgType, accessToken, { resolveLinks: true, dataFormat: 'file' })
         .then((response) => {
             return writeFiles(response);
         })

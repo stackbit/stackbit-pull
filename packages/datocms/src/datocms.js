@@ -7,7 +7,7 @@ const { utils } = require('@stackbit/stackbit-pull-core');
  *
  * @param ssgType {string}
  * @param readwriteToken {string}
- * @param options {{environment: string, preview: boolean, resolveLinks: boolean, allObjects: boolean, dataFormat: string, metadata: boolean}}
+ * @param options {{environment: string, resolveLinks: boolean, allObjects: boolean, dataFormat: string, metadata: boolean}}
  * @returns {PromiseLike<{readonly entries?: *, readonly assets?: *}>}
  */
 function pull(ssgType, readwriteToken, options) {

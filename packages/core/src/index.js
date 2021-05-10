@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
 const fse = require('fs-extra');
 const yaml = require('js-yaml');
 const toml = require('@iarna/toml');
@@ -77,11 +77,19 @@ function writeFiles(encodedFiles) {
     for (let i = 0; i < encodedFiles.length; i++) {
         const fullPath = path.join(process.cwd(), encodedFiles[i].filePath);
         fse.ensureDirSync(path.dirname(fullPath));
-        if (fs.existsSync(fullPath) && ['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))) {
-            encodedFiles[i].data = mergeFile(fullPath, encodedFiles[i].data);
+        let fileContentChanged = true;
+        if (fs.existsSync(fullPath)) {
+            if (['yml', 'yaml', 'toml', 'json'].includes(path.extname(fullPath).substring(1))) {
+                encodedFiles[i].data = mergeFile(fullPath, encodedFiles[i].data);
+            }
+            fileContentChanged = !_.isEqual(encodedFiles[i].data, fs.readFileSync(fullPath, 'utf8'));
         }
-        console.log('creating file', fullPath);
-        fs.writeFileSync(fullPath, encodedFiles[i].data);
+        if (fileContentChanged) {
+            console.log('creating file', fullPath);
+            fs.writeFileSync(fullPath, encodedFiles[i].data);
+        } else {
+            console.log('content unchanged, skipping write', fullPath);
+        }
     }
 }
 

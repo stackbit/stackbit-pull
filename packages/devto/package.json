@@ -1,6 +1,6 @@
 {
   "name": "@stackbit/devto-pull",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "> TODO: description",
   "author": "davbree <david@stackbit.com>",
   "homepage": "https://github.com/stackbithq/stackbit-pull#readme",
@@ -24,6 +24,6 @@
     "url": "https://github.com/stackbithq/stackbit-pull/issues"
   },
   "dependencies": {
-    "@stackbit/stackbit-pull-core": "^0.5.0"
+    "@stackbit/stackbit-pull-core": "^0.5.1"
   }
 }
